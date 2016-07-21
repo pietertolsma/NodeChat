@@ -12,40 +12,55 @@ fs.readFile('package.json', 'utf8', function(err, data){
 });
 
 var connectedClients = [];
+var chatBackLog = [];
+var maxBackLogSize = 0; //Default
 
-function getUsername(sessionId){
-  for(var i = 0; i < connectedClients.length; i++){
-    if(connectedClients[i].sessionId === sessionId){
-      return connectedClients[i].name;
-    }
+function getUsername (sessionId) {
+  for (var i = 0; i < connectedClients.length; i++) {
+    if (connectedClients[i].sessionId === sessionId) return connectedClients[i].name;
   }
 }
 
-
-function startServer(data){
+function startServer (data) {
+  maxBackLogSize = data.maxChatHistory;
+  //Include static files such as css and js
   app.use(express.static(__dirname + '/public'));
-  app.get('/', function(req, res){
+
+  //Creates the server (routing)
+  app.get('/', function (req, res) {
     res.sendFile(__dirname + "/public/index.html");
   });
 
-  io.on('connection', function(socket){
-    connectedClients.push({sessionId : socket.id, name : "<Guest#" + connectedClients.length + "> ", admin : false});
+  //Fires when a new client connects
+  io.on('connection', function (socket) {
+    connectedClients.push({sessionId : socket.id, name : "[Guest#" + connectedClients.length + "] ", admin : false});
     console.log('A user connected!');
+    io.emit('chat history', chatBackLog.toString());
+    io.emit('user change', connectedClients.length);
     io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
-    socket.on('chat message', function(msg){
-      io.emit('chat message', getUsername(socket.id) + msg);
+
+    //Fires when the a client sends a chat message
+    socket.on('chat message', function (msg) {
+      var fullMessage = getUsername(socket.id) + msg;
+      if (chatBackLog.length >= maxBackLogSize) chatBackLog.splice(0, 1);
+      chatBackLog.push(fullMessage);
+      io.emit('chat message', fullMessage);
     });
+
+    //Fires when a user disconnects
     socket.on('disconnect', function(){
       console.log("A user disconnected!");
       io.emit('chat message', getUsername(socket.id) + " has left the channel.");
       for(var i = 0; i < connectedClients.length; i++){
         if(connectedClients[i].sessionId === socket.id){
           connectedClients.splice(i, 1);
+          io.emit('user change', connectedClients.length);
         }
       }
     });
   });
 
+  //Start listening for incoming data
   http.listen(data.port, function(){
     console.log(data.name + " " + data.version + " started on port " + data.port);
   });

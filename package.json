@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Simple NodeJS IRC",
   "port": 3003,
+  "maxChatHistory": 50,
   "dependencies": {
     "express": "^4.10.2",
     "socket.io": "^1.4.8"

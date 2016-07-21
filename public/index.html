@@ -8,6 +8,12 @@
     <textarea autofocus id="input" >
 
     </textarea>
+
+    <div id="user-panel">
+      <input id="set-name" type="text"><a id="confirm-name">set</a></input>
+      <p>Users online: <span id="user-count">0</span></p>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
@@ -21,6 +27,19 @@
       });
       socket.on("chat message", function(msg){
         $('#chat').append($("<li>").text(msg));
+        var chat = $("#chat");
+        chat.animate({scrollTop: chat.prop("scrollHeight") - chat.height()}, 100);
+      });
+
+      socket.on("user change", function (count) {
+        $("#user-count").text(count);
+      });
+
+      socket.on("chat history", function (messages) {
+        var msgArray = messages.split(',');
+        for(var i = 0; i < msgArray.length; i++){
+          $('#chat').append($("<li>").text(msgArray[i]));
+        }
         var chat = $("#chat");
         chat.animate({scrollTop: chat.prop("scrollHeight") - chat.height()}, 100);
       });
