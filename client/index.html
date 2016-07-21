@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <style type="text/css">
+      body{
+        margin: 0;
+      }
+      textarea{
+        position: absolute;
+        bottom: 0;
+        margin: 0;
+        width: 100%;
+        padding: 20px;
+        line-height: 1;
+        rows: 1;
+        height: auto;
+        font-size: 1.4em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to this IRC!</h1>
+    <div id="chat"></div>
+    <textarea autofocus id="input">
+
+    </textarea>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+      $(document).keypress(function(e){
+        if(e.which == 13){
+          socket.emit('chat message', $("#input").val());
+          $('#input').val('');
+          return false;
+        }
+      });
+      socket.on("chat message", function(msg){
+        $('#chat').append($("<li>").text(msg));
+      });
+    </script>
+  </body>
+</html>
