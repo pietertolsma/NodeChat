@@ -1,10 +1,10 @@
 //=============== Initialization ===============================================================
 
-var fs = require('fs'); //Handles all the reading / writing files
-var express = require('express'); //Makes things like routing easier
+var fs = require( 'fs'); //Handles all the reading / writing files
+var express = require( 'express'); //Makes things like routing easier
 var app = express(); //Get express object, see express docs
-var http = require('http').Server(app); //Used to listen for incoming requests
-var io = require('socket.io')(http); //The secret sauce of this application, Socket.IO. Handles TCP connections
+var http = require( 'http').Server( app); //Used to listen for incoming requests
+var io = require( 'socket.io')( http); //The secret sauce of this application, Socket.IO. Handles TCP connections
 
 //Read from the config file 'package.json'
 fs.readFile('package.json', 'utf8', function (err, data) {
@@ -20,13 +20,13 @@ var maxBackLogSize = 0; //This is the max size of the chat history, when cap is 
 
 //================= Getters + Setters ==========================================================
 
-function getUsername (sessionId) {
+function getUsername ( sessionId) {
   for (var i = 0; i < connectedClients.length; i++) {
     if (connectedClients[i].sessionId === sessionId) return connectedClients[i].name;
   }
 }
 
-function getUserIndex (sessionId) {
+function getUserIndex ( sessionId) {
   for (var i = 0; i < connectedClients.length; i++) {
     if (connectedClients[i].sessionId === sessionId) return i;
   }
@@ -53,7 +53,7 @@ function startServer (data) {
     //Fires when a client sends a chat message
     socket.on('chat message', function (msg) {
       if (msg) {
-        var fullMessage = getUsername(socket.id) + msg;
+        var fullMessage = getUsername( socket.id) + msg;
         if (chatBackLog.length >= maxBackLogSize) chatBackLog.splice(0, 1);
         chatBackLog.push(fullMessage);
         io.emit('chat message', fullMessage);
@@ -63,7 +63,7 @@ function startServer (data) {
     //Fires when a user changes its username
     socket.on('username change', function (name) {
       if (name) {
-        connectedClients[getUserIndex(socket.id)].name = "[" + name + "] ";
+        connectedClients[getUserIndex( socket.id)].name = "[" + name + "] ";
         io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
       }
     });
@@ -71,7 +71,7 @@ function startServer (data) {
     //Fires when a user disconnects
     socket.on('disconnect', function () {
       console.log("A user disconnected!");
-      io.emit('chat message', getUsername(socket.id) + " has left the channel.");
+      io.emit('chat message', getUsername( socket.id) + " has left the channel.");
       connectedClients.splice(getUserIndex(socket.id), 1);
       io.emit('user change', connectedClients.length);
     });
