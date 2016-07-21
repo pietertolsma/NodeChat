@@ -17,7 +17,7 @@ describe("Chat Events", function(){
     client2 = io('http://localhost:3003', ioOptions);
     setTimeout(function () {
       done();
-    }, 1000);
+    }, 5000);
   });
 
   describe("Message Events", function(){
