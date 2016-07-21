@@ -43,7 +43,7 @@ describe("Chat Events", function(){
       });
       setTimeout(function(){
         done();
-      }, 1800);
+      }, 300);
     });
   });
 
