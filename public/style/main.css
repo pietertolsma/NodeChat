@@ -2,15 +2,38 @@ body{
   margin: 0;
   background-color: #16a085;
   font-family: sans-serif;
+  height: 100%;
 }
 
-h1{
+.panel-heading{
+  color: #ecf0f1;
+}
+
+#header{
   text-align: center;
   color: #ecf0f1;
-  font-size: 3em;
+  border-bottom: 0;
   background-color: #1abc9c;
-  padding: 30px;
-  height: 60px;
+  margin: 0;
+  padding: 20px;
+}
+
+#header h1{
+  margin: 0;
+  padding: 20px;
+}
+
+#input{
+  font-size: 2em;
+  height: 70px;
+}
+#inputButton{
+  height: 70px;
+}
+
+#chatInput{
+  position: absolute;
+  bottom: 0;
 }
 
 #chat{
@@ -21,44 +44,7 @@ h1{
   margin: 0 40px;
 }
 
-#user-panel{
-  position: absolute;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.5);
-  margin: 40px;
-  top: 110px;
-  border-radius: 8px;
-  padding: 30px;
-  height: 400px;
-}
-
-#set-name{
-  border: none;
-  padding: 15px;
-}
-
-#set-name a{
-  background-color: #e74c3c;
-  display: block;
-}
-
 li{
   list-style: none;
   margin-bottom: 8px;
-}
-
-textarea{
-  position: absolute;
-  bottom: 0;
-  margin: 30px;
-  width: calc(100% - 60px);
-  resize: none;
-  border-radius: 7px;
-  border: none;
-  padding: 20px;
-  line-height: 1;
-  rows: 1;
-  height: 50px;
-  padding-bottom: 40px;
-  font-size: 25px;
 }

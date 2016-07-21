@@ -21,6 +21,12 @@ function getUsername (sessionId) {
   }
 }
 
+function findUserIndex (sessionId) {
+  for (var i = 0; i < connectedClients.length; i++) {
+    if (connectedClients[i].sessionId === sessionId) return i;
+  }
+}
+
 function startServer (data) {
   maxBackLogSize = data.maxChatHistory;
   //Include static files such as css and js
@@ -37,7 +43,6 @@ function startServer (data) {
     console.log('A user connected!');
     io.emit('chat history', chatBackLog.toString());
     io.emit('user change', connectedClients.length);
-    io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
 
     //Fires when the a client sends a chat message
     socket.on('chat message', function (msg) {
@@ -47,16 +52,17 @@ function startServer (data) {
       io.emit('chat message', fullMessage);
     });
 
+    socket.on('username change', function (name) {
+      connectedClients[findUserIndex(socket.id)].name = "[" + name + "] ";
+      io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
+    });
+
     //Fires when a user disconnects
     socket.on('disconnect', function(){
       console.log("A user disconnected!");
       io.emit('chat message', getUsername(socket.id) + " has left the channel.");
-      for(var i = 0; i < connectedClients.length; i++){
-        if(connectedClients[i].sessionId === socket.id){
-          connectedClients.splice(i, 1);
-          io.emit('user change', connectedClients.length);
-        }
-      }
+      connectedClients.splice(findUserIndex(socket.id), 1);
+      io.emit('user change', connectedClients.length);
     });
   });
 
