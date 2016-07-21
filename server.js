@@ -23,8 +23,9 @@ function getUsername(sessionId){
 
 
 function startServer(data){
+  app.use(express.static(__dirname + '/public'));
   app.get('/', function(req, res){
-    res.sendFile(__dirname + "/client/index.html");
+    res.sendFile(__dirname + "/public/index.html");
   });
 
   io.on('connection', function(socket){

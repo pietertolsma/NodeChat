@@ -1,0 +1,42 @@
+body{
+  margin: 0;
+  background-color: #16a085;
+  font-family: sans-serif;
+}
+
+h1{
+  text-align: center;
+  color: #ecf0f1;
+  font-size: 3em;
+  background-color: #1abc9c;
+  padding: 30px;
+  height: 60px;
+}
+
+#chat{
+  color: #ecf0f1;
+  font-size: 1.2em;
+  height: calc(100% - 240px);
+  overflow: scroll;
+  margin: 0 40px;
+}
+
+li{
+  list-style: none;
+}
+
+textarea{
+  position: absolute;
+  bottom: 0;
+  margin: 30px;
+  width: calc(100% - 60px);
+  resize: none;
+  border-radius: 7px;
+  border: none;
+  padding: 20px;
+  line-height: 1;
+  rows: 1;
+  height: 50px;
+  padding-bottom: 40px;
+  font-size: 25px;
+}
