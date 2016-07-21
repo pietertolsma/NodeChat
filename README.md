@@ -9,8 +9,8 @@ to let people who are not on your network join the channel, but keep in mind tha
 
   ### Dependencies
 This project depends on the following modules (they are already included so you don't need to download them separately):
-- [Express v4.10.2](https://expressjs.com/)
-- [Socket.IO v1.4.8](http://socket.io/)
+  - [Express v4.10.2](https://expressjs.com/)
+  - [Socket.IO v1.4.8](http://socket.io/)
 
 ## Contributing
 
