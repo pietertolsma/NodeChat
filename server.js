@@ -60,6 +60,11 @@ function startServer (data) {
       }
     });
 
+    //Used for testing
+    socket.on('echo', function (msg) {
+      socket.emit('echo', msg);
+    });
+
     //Fires when a user changes its username
     socket.on('username change', function (name) {
       if (name) {
@@ -81,4 +86,9 @@ function startServer (data) {
   http.listen(data.port, function () {
     console.log(data.name + " " + data.version + " started on port " + data.port);
   });
+}
+
+function closeServer(){
+  http.close();
+  return true;
 }

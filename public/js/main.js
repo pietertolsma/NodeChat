@@ -6,17 +6,23 @@ $(document).ready(function () {
   }, 500);
 });
 $("#input").keypress(function (e) {
-  if(e.which == 13) sendMessage();
+  if(e.which == 13) sendMessage($("#input").val());
 });
 $("#inputButton").on('click', function () {
-  sendMessage();
+  sendMessage($("#input").val());
 });
 
-function sendMessage () {
-  var msg = $("#input").val();
+function sumThis(a, b){
+  return a+b;
+}
+
+function sendMessage (msg) {
   if(msg){
     socket.emit('chat message', msg);
     $('#input').val('');
+    return true;
+  }else{
+    return false;
   }
 }
 
