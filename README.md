@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pietertolsma/NodeChat.svg?branch=master)](https://travis-ci.org/pietertolsma/NodeChat)
+
 # NodeChat
 Custom IRC using NodeJS. Easily setup your own chatroom in a couple of simple steps!
 
