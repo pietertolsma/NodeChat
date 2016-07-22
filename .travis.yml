@@ -1,9 +1,9 @@
 language: node_js
 node_js:
   - "4.4"
+notifications:
+  email: false
 script:
   - "npm test"
 after_success:
-  - "npm run coveralls"
-  - cat ./coverage/lcov.info ./coverage/karma/**/*.info > lcov.info
-  - node node_modules/lcov-filter/index.js lcov.info config | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
