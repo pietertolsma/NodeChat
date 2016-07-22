@@ -19,8 +19,15 @@ describe("Chat Events", function(){
   });
 
   describe("Message Events", function(){
+    it("Client should receive an echo when message is sent.", function(done){
+      client1.emit("echo", "Hello World");
+      client1.on("echo", function(msg){
+        msg.should.equal("Hello World");
+        done();
+      });
+    });
     it("Server should broadcast chat message", function(done){
-      client1.emit("chat message", "");
+      client1.emit("chat message", "hi");
       client2.on("chat message", function(msg){
         msg.should.not.equal("");
         done();
