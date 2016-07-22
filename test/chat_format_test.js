@@ -20,7 +20,7 @@ describe("Chat Events", function(){
 
   describe("Message Events", function(){
     it("Server should broadcast chat message", function(done){
-      client1.emit("chat message", "hi");
+      client1.emit("chat message", "");
       client2.on("chat message", function(msg){
         msg.should.not.equal("");
         done();
