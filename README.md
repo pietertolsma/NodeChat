@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/pietertolsma/NodeChat.png?label=ready&title=Ready)](https://waffle.io/pietertolsma/NodeChat)
 [![Build Status](https://travis-ci.org/pietertolsma/NodeChat.svg?branch=master)](https://travis-ci.org/pietertolsma/NodeChat)
 
 # NodeChat
