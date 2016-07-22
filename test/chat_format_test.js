@@ -15,7 +15,9 @@ describe("Chat Events", function(){
     server = require("../server.js")
     client1 = io('http://localhost:3003', ioOptions);
     client2 = io('http://localhost:3003', ioOptions);
-    done();
+    setTimeout(function () {
+      done();
+    }, 1950);
   });
 
   describe("Message Events", function(){
