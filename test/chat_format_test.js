@@ -8,16 +8,13 @@ var ioOptions = {
     , forceNew: true
     , reconnection: false};
 
-var server, client1, client2;
+var server = require("../server.js"), client1, client2;
 
 describe("Chat Events", function(){
   beforeEach(function(done){
-    server = require("../server.js")
     client1 = io('http://localhost:3003', ioOptions);
     client2 = io('http://localhost:3003', ioOptions);
-    setTimeout(function () {
-      done();
-    }, 3000);
+    done();
   });
 
   describe("Message Events", function(){
