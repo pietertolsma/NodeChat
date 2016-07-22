@@ -77,4 +77,7 @@ socket.on("chat history", function (messages) {
 //Fires when the client receives the configuration file from the server
 socket.on("configuration request", function (info) {
   data = JSON.parse(info);
+  $('.chat-title').each(function (index) {
+    $(this).text(data.chatTitle);
+  })
 });

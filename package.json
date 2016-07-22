@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Simple NodeJS IRC",
   "port": 3003,
+  "chatTitle": "NodeChat",
   "maxChatHistory": 50,
   "maxUsernameLength": 15,
   "dependencies": {

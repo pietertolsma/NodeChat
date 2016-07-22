@@ -5,6 +5,8 @@
 # NodeChat
 Custom IRC using NodeJS. Easily setup your own chatroom in a couple of simple steps!
 
+The goal of NodeChat is to be a very configurable, easy to set up and clean chat application. It also serves as a playground to test out features of NodeJS!
+
 ## How to setup your own server
 - Download this entire repository. Make sure you have [NodeJS](https://nodejs.org/en/) installed on your machine.
 - In the terminal/cmd, go into the project and type the following:  `node server.js`. The server should start.
@@ -13,6 +15,7 @@ Custom IRC using NodeJS. Easily setup your own chatroom in a couple of simple st
   ### Configuration
 
   You can change the following parameters in `package.json`:
+  - `chatTitle`: change the name of NodeChat (default). This will show up on the client page.
   - `port`: change what port this server listens to.
   - `maxChatHistory`: change the maximum amount of previous messages the server sends to a new user.
   - `maxUsernameLength`: change the maximum length of a username.
