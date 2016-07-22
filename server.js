@@ -13,7 +13,7 @@ fs.readFile('package.json', 'utf8', function (err, data) {
   if (err) {
     console.error("Failed to read config.json!", err);
   }
-  localData = data;
+  localData = JSON.parse(data);
   startServer(JSON.parse(data)); //Start the server when all data is read
 });
 
@@ -43,6 +43,10 @@ var getHost = function getHost () {
 
 var getInstance = function getInstance () {
   return io;
+}
+
+var getMaxUsernameLength = function getMaxUsernameLength () {
+  return localData.maxUsernameLength;
 }
 
 var isServerListening = function isServerListening () {
@@ -86,7 +90,7 @@ var startServer = function startServer (data) {
 
     //Fires when a user changes its username
     socket.on('username change', function (name) {
-      if (name) {
+      if (name && (name.length <= data.maxUsernameLength)) {
         connectedClients[getUserIndex( socket.id)].name = "[" + name + "] ";
         io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
       }
@@ -124,5 +128,6 @@ module.exports = {
   getHost: getHost,
   getInstance: getInstance,
   startServer: startServer,
-  isServerListening: isServerListening
+  isServerListening: isServerListening,
+  getMaxUsernameLength: getMaxUsernameLength
 }

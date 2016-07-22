@@ -11,7 +11,7 @@ var ioOptions = {
 var server = require("../server.js"), client1, client2;
 var ioServer = server.getInstance();
 
-describe("Chat Events", function(){
+describe("Server-side", function(){
   beforeEach(function(done){
     if(!server.isServerListening()){
       server.startServer();
@@ -23,24 +23,27 @@ describe("Chat Events", function(){
   });
 
   describe("Message Events", function () {
-    it("Client should receive an echo when message is sent.", function (done) {
+    it("should receive an echo when message is sent.", function (done) {
       client1.emit("echo", "Hello World");
       client1.on("echo", function(msg){
         msg.should.equal("Hello World");
         done();
       });
     });
-    it("Server should broadcast chat message", function(done){
+    it("should receive chat message when sent", function(done){
       client1.emit("chat message", "hi");
       client2.on("chat message", function(msg){
         msg.should.not.equal("");
         done();
       });
     });
+
+    it("should not accept messages larger than the threshold");
+    it("should not allow spamming");
   });
 
   describe("User Events", function () {
-    describe("on username change", function () {
+    describe("username verification", function () {
       it("should not accept empty usernames", function (done) {
         client1.emit("username change", "");
         client2.on("chat message", function (data) {
@@ -48,11 +51,20 @@ describe("Chat Events", function(){
         });
         setTimeout(function () {
           done();
-        }, 300);
+        }, 50);
       });
       it("should not accept usernames longer than 15 chars", function (done) {
-
+        var username = "a".repeat(server.getMaxUsernameLength()) + "a";
+        client1.emit("username change", username);
+        client2.on("chat message", function (data) {
+          throw Error("Fail, server did send a response.");
+        });
+        setTimeout(function () {
+          done();
+        }, 50);
       });
+      it("should not accept a username that is already taken");
+      it("should not accept spamming");
     });
   });
 
