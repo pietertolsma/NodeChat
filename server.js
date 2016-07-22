@@ -96,6 +96,12 @@ var startServer = function startServer (data) {
       }
     });
 
+    //Fires when client requests configs
+    socket.on('configuration request', function(msg){
+      console.log(data);
+      socket.emit('configuration request', JSON.stringify(data));
+    });
+
     //Fires when a user disconnects
     socket.on('disconnect', function () {
       console.log("A user disconnected!");
