@@ -1,41 +1,60 @@
 //=============== Initialization ===============================================================
 
-var fs = require( 'fs'); //Handles all the reading / writing files
-var express = require( 'express'); //Makes things like routing easier
+var fs = require('fs'); //Handles all the reading / writing files
+var express = require('express'); //Makes things like routing easier
 var app = express(); //Get express object, see express docs
-var http = require( 'http').Server( app); //Used to listen for incoming requests
-var io = require( 'socket.io')( http); //The secret sauce of this application, Socket.IO. Handles TCP connections
+var http = require('http').Server( app); //Used to listen for incoming requests
+var io = require('socket.io')( http); //The secret sauce of this application, Socket.IO. Handles TCP connections
+
+var localData;
 
 //Read from the config file 'package.json'
 fs.readFile('package.json', 'utf8', function (err, data) {
   if (err) {
     console.error("Failed to read config.json!", err);
   }
+  localData = data;
   startServer(JSON.parse(data)); //Start the server when all data is read
 });
 
 var connectedClients = []; //This array will be filled up with data from connected users.
 var chatBackLog = []; //This array will be filled with the most recent chat messages.
 var maxBackLogSize = 0; //This is the max size of the chat history, when cap is reached oldest will be removed.
+var port = "3000" //Default port
+var isListening = false;
 
 //================= Getters + Setters ==========================================================
 
-function getUsername ( sessionId) {
+var getUsername = function getUsername(sessionId) {
   for (var i = 0; i < connectedClients.length; i++) {
     if (connectedClients[i].sessionId === sessionId) return connectedClients[i].name;
   }
 }
 
-function getUserIndex ( sessionId) {
+var getUserIndex = function getUsexIndex(sessionId) {
   for (var i = 0; i < connectedClients.length; i++) {
     if (connectedClients[i].sessionId === sessionId) return i;
   }
 }
 
+var getHost = function getHost () {
+  return "http://localhost:" + port;
+}
+
+var getInstance = function getInstance () {
+  return io;
+}
+
+var isServerListening = function isServerListening () {
+  return isListening;
+}
+
 //================ Main Server Method ============================================================
 
-function startServer (data) {
+var startServer = function startServer (data) {
+  if(!data) data = localData;
   maxBackLogSize = data.maxChatHistory; //Set the maximum chat history
+  port = data.port;
   app.use(express.static(__dirname + '/public')); //Makes sure that client has access to all public files
 
   //Create a server route on root ('/')
@@ -84,11 +103,26 @@ function startServer (data) {
 
   //Start listening for incoming data
   http.listen(data.port, function () {
-    console.log(data.name + " " + data.version + " started on port " + data.port);
+    console.log(data.name + " " + data.version + " started on port " + port);
+    isListening = true;
   });
 }
 
+//Close the server
 function closeServer(){
   http.close();
+  console.log("Server shutting down..");
+  isListening = false;
   return true;
+}
+
+//================== Declare Exports =====================================
+module.exports = {
+  closeServer: closeServer,
+  getUsername: getUsername,
+  getUserIndex: getUserIndex,
+  getHost: getHost,
+  getInstance: getInstance,
+  startServer: startServer,
+  isServerListening: isServerListening
 }

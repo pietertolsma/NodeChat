@@ -9,16 +9,21 @@ var ioOptions = {
     , reconnection: false};
 
 var server = require("../server.js"), client1, client2;
+var ioServer = server.getInstance();
 
 describe("Chat Events", function(){
   beforeEach(function(done){
-    client1 = io('http://localhost:3003', ioOptions);
-    client2 = io('http://localhost:3003', ioOptions);
+    if(!server.isServerListening()){
+      server.startServer();
+    }
+    var host = server.getHost();
+    client1 = io(host, ioOptions);
+    client2 = io(host, ioOptions);
     done();
   });
 
-  describe("Message Events", function(){
-    it("Client should receive an echo when message is sent.", function(done){
+  describe("Message Events", function () {
+    it("Client should receive an echo when message is sent.", function (done) {
       client1.emit("echo", "Hello World");
       client1.on("echo", function(msg){
         msg.should.equal("Hello World");
@@ -34,15 +39,20 @@ describe("Chat Events", function(){
     });
   });
 
-  describe("User Events", function(){
-    it("Server should not accept empty usernames", function(done){
-      client1.emit("username change", "");
-      client2.on("chat message", function(data){
-        throw Error("Fail, server did send a response.");
+  describe("User Events", function () {
+    describe("on username change", function () {
+      it("should not accept empty usernames", function (done) {
+        client1.emit("username change", "");
+        client2.on("chat message", function (data) {
+          throw Error("Fail, server did send a response.");
+        });
+        setTimeout(function () {
+          done();
+        }, 300);
       });
-      setTimeout(function(){
-        done();
-      }, 300);
+      it("should not accept usernames longer than 15 chars", function (done) {
+
+      });
     });
   });
 
@@ -51,5 +61,4 @@ describe("Chat Events", function(){
     client2.disconnect();
     done();
   });
-
 });
