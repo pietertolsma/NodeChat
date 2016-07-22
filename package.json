@@ -18,7 +18,6 @@
     "socket.io-client": "^1.4.8"
   },
   "scripts": {
-    "test": "mocha",
-    "coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    "test": "istanbul cover _mocha"
   }
 }
