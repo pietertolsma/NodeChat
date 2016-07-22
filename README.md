@@ -1,6 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/pietertolsma/NodeChat.png?label=ready&title=Ready)](https://waffle.io/pietertolsma/NodeChat)
 [![Build Status](https://travis-ci.org/pietertolsma/NodeChat.svg?branch=master)](https://travis-ci.org/pietertolsma/NodeChat)
-[![Coverage Status:)](https://coveralls.io/repos/github/pietertolsma/NodeChat/badge.svg?branch=master)](https://coveralls.io/github/pietertolsma/NodeChat?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/pietertolsma/NodeChat/badge.svg)](https://coveralls.io/github/pietertolsma/NodeChat?branch=master)
 
 # NodeChat
 Custom IRC using NodeJS. Easily setup your own chatroom in a couple of simple steps!
