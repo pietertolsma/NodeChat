@@ -11,11 +11,9 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "istanbul": "^0.4.4",
     "jshint": "^2.6.0",
     "mocha": "^2.5.3",
     "socket.io-client": "^1.4.8"
-  },
-  "scripts": {
-    "test": "mocha"
   }
 }
