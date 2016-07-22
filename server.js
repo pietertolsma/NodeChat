@@ -60,10 +60,6 @@ function startServer (data) {
       }
     });
 
-    //Used for testing
-    socket.on('echo', function (msg) {
-      socket.emit('echo', msg);
-    });
 
     //Fires when a user changes its username
     socket.on('username change', function (name) {
