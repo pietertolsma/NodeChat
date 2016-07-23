@@ -27,7 +27,7 @@ body{
   font-size: 2em;
   height: 70px;
 }
-#inputButton{
+.chat-button{
   height: 70px;
 }
 

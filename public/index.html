@@ -14,8 +14,23 @@
     <div class="input-group" id="chatInput">
       <input id="input" type="text" class="form-control" aria-label="glyphicon glyphicon-arrow-right">
       <span class="input-group-btn">
-        <button class="btn btn-default" id="inputButton" type="button">Send</button>
+        <button class="btn btn-default chat-button" data-toggle="modal" data-target="#selectEmoji" id="emojiButton" type="button"><span class="glyphicon glyphicon-plus-sign"</span></button>
+        <button class="btn btn-default chat-button" id="inputButton" type="button">Send</button>
       </span>
+    </div>
+
+    <div class="modal fade" id="selectEmoji" tabindex="-1" role="dialog" visibility="hidden" aria-labelledby="selectEmojiLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="setUsernameLabel">Select your Emoji</h4>
+          </div>
+          <div class="modal-body">&#128512;</div>
+        </div>
+      </div>
+    </div>
     </div>
 
     <div class="modal fade" id="setUsername" tabindex="-1" role="dialog" aria-labelledby="setUsernameLabel">

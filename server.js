@@ -60,7 +60,6 @@ var startServer = function startServer (data) {
   maxBackLogSize = data.maxChatHistory; //Set the maximum chat history
   port = data.port;
   app.use(express.static(__dirname + '/public')); //Makes sure that client has access to all public files
-
   //Create a server route on root ('/')
   app.get('/', function (req, res) {
     res.sendFile(__dirname + "/public/index.html"); //Send the homepage to client
