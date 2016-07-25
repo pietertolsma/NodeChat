@@ -47,7 +47,7 @@ function changeUsername () {
     $("#empty-warning").text("Your username cannot be longer than " + data.maxUsernameLength + " characters.");
     $("#empty-warning").show();
   } else {
-    socket.emit('username change', newName);
+    socket.emit('user change', newName);
     $("#setUsername").modal('hide');
     $("#input").focus();
   }

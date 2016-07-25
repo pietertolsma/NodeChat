@@ -88,7 +88,7 @@ var startServer = function startServer (data) {
     });
 
     //Fires when a user changes its username
-    socket.on('username change', function (name) {
+    socket.on('user change', function (name) {
       if (name && (name.length <= data.maxUsernameLength) && !isUsernameTaken(name)) {
         connectedClients[getUserIndex( socket.id)].name = name;
         io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
