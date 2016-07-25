@@ -1,6 +1,7 @@
 
 var socket = io();
 var data = JSON.parse('{"maxUsernameLength": 0}');
+var connectedClients = [];
 socket.emit("configuration request", "");
 
 $(document).ready(function () {
@@ -37,17 +38,27 @@ $("#setUsernameInput").keypress(function (e) {
 
 function changeUsername () {
   var newName = $("#setUsernameInput").val();
-  if (newName && newName.length <= data.maxUsernameLength) {
-    socket.emit('username change', newName);
-    $("#setUsername").modal('hide');
-    $("#input").focus();
+  if (isUsernameTaken(newName)) {
+    $("#empty-warning").text("This username is already taken!").show();
   } else if (!newName) {
     $("#empty-warning").text("Your username cannot be empty..");
     $("#empty-warning").show();
-  } else {
+  } else if (newName.length > data.maxUsernameLength){
     $("#empty-warning").text("Your username cannot be longer than " + data.maxUsernameLength + " characters.");
     $("#empty-warning").show();
+  } else {
+    socket.emit('username change', newName);
+    $("#setUsername").modal('hide');
+    $("#input").focus();
   }
+}
+
+function isUsernameTaken(name){
+  for (var i = 0; i < connectedClients.length; i++) {
+    console.log(connectedClients[i].name);
+    if (connectedClients[i].name.toLowerCase() == name.toLowerCase()) return true;
+  }
+  return false;
 }
 
 //========== Socket Listeners =====================================
@@ -60,8 +71,9 @@ socket.on("chat message", function (msg) {
 });
 
 //Fires when a username changes
-socket.on("user change", function (count) {
-  $("#user-count").text(count);
+socket.on("user change", function (clients) {
+  connectedClients = clients;
+  $("#user-count").text(clients.length);
 });
 
 //Fires when the server sends this client the chat history

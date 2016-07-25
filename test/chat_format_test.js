@@ -13,13 +13,12 @@ var ioServer = server.getInstance();
 
 describe("Server-side", function(){
   beforeEach(function(done){
-    if(!server.isServerListening()){
-      server.startServer();
-    }
-    var host = server.getHost();
-    client1 = io(host, ioOptions);
-    client2 = io(host, ioOptions);
-    done();
+    setTimeout(function () {
+      var host = server.getHost();
+      client1 = io(host, ioOptions);
+      client2 = io(host, ioOptions);
+      done();
+    }, 100);
   });
 
   describe("Message Events", function () {

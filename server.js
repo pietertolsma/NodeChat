@@ -67,15 +67,15 @@ var startServer = function startServer (data) {
 
   //Fires when a new client connects
   io.on('connection', function (socket) {
-    connectedClients.push({sessionId : socket.id, name : "[Guest#" + connectedClients.length + "] ", admin : false});
+    connectedClients.push({sessionId : socket.id, name : "Guest#" + connectedClients.length + "", admin : false});
     console.log('A user connected!');
     io.emit('chat history', chatBackLog.toString());
-    io.emit('user change', connectedClients.length);
+    io.emit('user change', connectedClients);
 
     //Fires when a client sends a chat message
     socket.on('chat message', function (msg) {
       if (msg) {
-        var fullMessage = getUsername( socket.id) + msg;
+        var fullMessage = "[" + getUsername(socket.id) + "] " + msg;
         if (chatBackLog.length >= maxBackLogSize) chatBackLog.splice(0, 1);
         chatBackLog.push(fullMessage);
         io.emit('chat message', fullMessage);
@@ -89,9 +89,10 @@ var startServer = function startServer (data) {
 
     //Fires when a user changes its username
     socket.on('username change', function (name) {
-      if (name && (name.length <= data.maxUsernameLength)) {
-        connectedClients[getUserIndex( socket.id)].name = "[" + name + "] ";
+      if (name && (name.length <= data.maxUsernameLength) && isUsernameTaken(name)) {
+        connectedClients[getUserIndex( socket.id)].name = name;
         io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
+        io.emit('user change', connectedClients);
       }
     });
 
@@ -105,7 +106,7 @@ var startServer = function startServer (data) {
       console.log("A user disconnected!");
       io.emit('chat message', getUsername( socket.id) + " has left the channel.");
       connectedClients.splice(getUserIndex(socket.id), 1);
-      io.emit('user change', connectedClients.length);
+      io.emit('user change', connectedClients);
     });
   });
 
@@ -122,6 +123,13 @@ function closeServer(){
   console.log("Server shutting down..");
   isListening = false;
   return true;
+}
+
+function isUsernameTaken(name){
+  for (var i = 0; i < connectedClients.length; i++) {
+    if (connectedClients[i].name.toLowerCase() == name.toLowerCase()) return true;
+  }
+  return false;
 }
 
 //================== Declare Exports =====================================
