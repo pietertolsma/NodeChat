@@ -59,7 +59,6 @@ describe("Server-side", function () {
     });
 
     it("should not accept messages larger than the threshold");
-    it("should not allow spamming");
   });
 
   describe("User Events", function () {

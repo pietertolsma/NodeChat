@@ -31,6 +31,10 @@ var getUsername = function getUsername(sessionId) {
   }
 }
 
+var getConnectedClients = function getConnectedClients () {
+  return connectedClients;
+}
+
 var getUserIndex = function getUsexIndex(sessionId) {
   for (var i = 0; i < connectedClients.length; i++) {
     if (connectedClients[i].sessionId === sessionId) return i;
@@ -67,6 +71,7 @@ var startServer = function startServer (data) {
 
   //Fires when a new client connects
   io.on('connection', function (socket) {
+    verifyUserList();
     connectedClients.push({sessionId : socket.id, name : "Guest#" + connectedClients.length + "", admin : false});
     console.log('A user connected!');
     io.emit('chat history', chatBackLog.toString());
@@ -134,6 +139,17 @@ function isUsernameTaken(name){
   return false;
 }
 
+function verifyUserList () {
+  currentClients = io.sockets.clients();
+  for (var i = 0; i < connectedClients.length; i++) {
+    var matchFound = false;
+    for (var i = 0; i < currentClients; i++) {
+      if (connectedClients[i].id === currentClients[i].id) matchFound = true;
+    }
+    if (!matchFound) connectedClients.pop(i);
+  }
+}
+
 //================== Declare Exports =====================================
 module.exports = {
   closeServer: closeServer,
@@ -143,5 +159,6 @@ module.exports = {
   getInstance: getInstance,
   startServer: startServer,
   isServerListening: isServerListening,
-  getMaxUsernameLength: getMaxUsernameLength
+  getMaxUsernameLength: getMaxUsernameLength,
+  getConnectedClients: getConnectedClients
 }
