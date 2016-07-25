@@ -17,7 +17,8 @@
     "jshint": "^2.6.0",
     "mocha": "^2.5.3",
     "mocha-lcov-reporter": "^1.2.0",
-    "socket.io-client": "^1.4.8"
+    "socket.io-client": "^1.4.8",
+    "zombie": "^4.2.1"
   },
   "scripts": {
     "test": "istanbul cover _mocha"

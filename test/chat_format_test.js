@@ -3,20 +3,41 @@ var chai = require('chai'),
     should = chai.should();
 
 var io = require('socket.io-client');
+const Browser = require('zombie');
+Browser.localhost('localhost', 3003);
 var ioOptions = {
       transports: ['websocket']
     , forceNew: true
     , reconnection: false};
 
 var server = require("../server.js"), client1, client2;
-var ioServer = server.getInstance();
 
-describe("Server-side", function(){
-  beforeEach(function(done){
+describe("Client-side", function () {
+  const browser = new Browser();
+  describe("username verification", function () {
+    before(function (done) {
+      browser.visit('/', done);
+    });
+    it("should not allow for an empty name", function () {
+      browser.fill('#setUsernameInput', "")
+      browser.pressButton('#setUsernameButton');
+      browser.assert.text(".verification-warning", "Your username cannot be empty..");
+    });
+    it("should not accept usernames longer than specified in package.json", function () {
+      var maxLength = server.getMaxUsernameLength();
+      var username = "a".repeat(maxLength + 1);
+      browser.fill('#setUsernameInput', username)
+      browser.pressButton('#setUsernameButton');
+      browser.assert.text(".verification-warning", "Your username cannot be longer than " + maxLength + " characters.");
+    });
+  });
+});
+
+describe("Server-side", function () {
+  beforeEach(function (done) {
     setTimeout(function () {
       var host = server.getHost();
       client1 = io(host, ioOptions);
-      client2 = io(host, ioOptions);
       done();
     }, 100);
   });
@@ -31,7 +52,7 @@ describe("Server-side", function(){
     });
     it("should receive chat message when sent", function(done){
       client1.emit("chat message", "hi");
-      client2.on("chat message", function(msg){
+      client1.on("chat message", function(msg){
         msg.should.not.equal("");
         done();
       });
@@ -44,23 +65,17 @@ describe("Server-side", function(){
   describe("User Events", function () {
     describe("username verification", function () {
       it("should not accept empty usernames", function (done) {
-        client1.emit("username change", "");
-        client2.on("chat message", function (data) {
-          throw Error("Fail, server did send a response.");
-        });
-        setTimeout(function () {
+        client1.emit("user change", "");
+        client1.on("error", function (data) {
           done();
-        }, 50);
+        });
       });
-      it("should not accept usernames longer than 15 chars", function (done) {
-        var username = "a".repeat(server.getMaxUsernameLength()) + "a";
-        client1.emit("username change", username);
-        client2.on("chat message", function (data) {
-          throw Error("Fail, server did send a response.");
-        });
-        setTimeout(function () {
+      it("should not accept usernames longer than specified in package.json", function (done) {
+        var username = "a".repeat(server.getMaxUsernameLength() + 1);
+        client1.emit("user change", username);
+        client1.on("error", function (data) {
           done();
-        }, 50);
+        });
       });
       it("should not accept a username that is already taken");
       it("should not accept spamming");
@@ -69,7 +84,6 @@ describe("Server-side", function(){
 
   afterEach(function(done){
     client1.disconnect();
-    client2.disconnect();
     done();
   });
 });

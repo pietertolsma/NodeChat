@@ -14,7 +14,7 @@ fs.readFile('package.json', 'utf8', function (err, data) {
     console.error("Failed to read config.json!", err);
   }
   localData = JSON.parse(data);
-  startServer(JSON.parse(data)); //Start the server when all data is read
+  startServer(localData); //Start the server when all data is read
 });
 
 var connectedClients = []; //This array will be filled up with data from connected users.
@@ -93,6 +93,8 @@ var startServer = function startServer (data) {
         connectedClients[getUserIndex( socket.id)].name = name;
         io.emit('chat message', getUsername(socket.id) + " has joined the channel.");
         io.emit('user change', connectedClients);
+      } else {
+        io.emit('error', 'invalid username error');
       }
     });
 

@@ -31,6 +31,10 @@ body{
   height: 70px;
 }
 
+#setUsernameLabel{
+  font-size: 2em;
+}
+
 #chatInput{
   position: absolute;
   bottom: 0;
