@@ -13,7 +13,10 @@ The goal of NodeChat is to be a very configurable, yet easy to set up and clean 
 
 ![NodeChat Preview](/../screenshots/console.png?raw=true "NodeChat v0.0.1")
 - Download this entire repository. Make sure you have [NodeJS](https://nodejs.org/en/) installed on your machine.
-- In the terminal/cmd, go into the project and type the following:  `node server.js`. The server should start.
+- In the terminal/cmd, go into the project and type the following commands:  
+  - `npm install --production`
+  - `node server`
+- The server should have started!
 - To start chatting away, go to `localhost:3003` (or another port if you changed it). To go public, you will need to port forward the port specified in `package.json`. When you've done this, send the following address to your friends: [YOUR PUBLIC IP]:[SPECIFIED PORT]. Click [here](http://www.whatsmyip.org/) to find out what your IP is.
 
   ### Configuration
