@@ -46,6 +46,10 @@ body{
   top: 200px;
 }
 
+#user-count{
+  background-color: green;
+}
+
 #chat{
   color: #ecf0f1;
   font-size: 1.2em;
