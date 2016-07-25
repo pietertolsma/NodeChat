@@ -73,7 +73,17 @@ socket.on("chat message", function (msg) {
 //Fires when a username changes
 socket.on("user change", function (clients) {
   connectedClients = clients;
-  $("#user-count").text(clients.length);
+  clientLength = clients.length;
+  $("#user-count").text(clientLength);
+  $("#user-list").empty();
+  for (var i = 0; i < clientLength; i++) {
+    if (i == 5) {
+      $("#user-list").append("<li class='list-group-item'>" + (clientLength - 5) + " more..</i>");
+      break;
+    } else {
+      $("#user-list").append("<li class='list-group-item'>" + clients[i].name + "</i>");
+    }
+  }
 });
 
 //Fires when the server sends this client the chat history
@@ -92,4 +102,7 @@ socket.on("configuration request", function (info) {
   $('.chat-title').each(function (index) {
     $(this).text(data.chatTitle);
   })
+  $('.chat-version').each(function (index) {
+    $(this).text(data.version);
+  });
 });

@@ -40,6 +40,12 @@ body{
   bottom: 0;
 }
 
+.user-list-container{
+  position: absolute;
+  right: 10px;
+  top: 200px;
+}
+
 #chat{
   color: #ecf0f1;
   font-size: 1.2em;

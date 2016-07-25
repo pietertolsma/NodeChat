@@ -8,9 +8,19 @@
   <body>
     <div class="page-header" id="header">
       <h1 class="chat-title"></h1>
-      <p>Users online: <span id="user-count">0</span></p>
+      <p>Users online: <span class="badge" id="user-count">0</span></p>
     </div>
     <div id="chat"></div>
+
+    <div class="panel panel-default user-list-container">
+      <div class="panel-heading">
+        Current users
+      </div>
+      <div class="panel-body">
+        <ul class="list-group" id="user-list"></ul>
+      </div>
+    </div>
+
     <div class="input-group" id="chatInput">
       <input id="input" type="text" class="form-control" aria-label="glyphicon glyphicon-arrow-right">
       <span class="input-group-btn">
@@ -33,14 +43,22 @@
     </div>
     </div>
 
-    <div class="modal fade" id="setUsername" tabindex="-1" role="dialog" aria-labelledby="setUsernameLabel">
+    <div class="modal fade" data-backdrop="static"
+   data-keyboard="false" id="setUsername" tabindex="-1" role="dialog" aria-labelledby="setUsernameLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="setUsernameLabel">Welcome to <span class="chat-title"></span>!</h4>
-        </div>
         <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2>Welcome to <span class="chat-title"></span>!</h2>
+              <p>v<span class="chat-version"></span></p>
+            </div>
+            <div class="panel-body">
+              <p>NodeChat is an IRC built upon the NodeJS framework.
+              Click <a href="http://www.github.com/pietertolsma/nodechat">here</a> to contribute to this open-source project!</p>
+              <p>Please enter a username below and press enter to start chatting :)</p>
+            </div>
+          </div>
           <div class="input-group">
             <input type="text" id="setUsernameInput" class="form-control" placeholder="Enter a username...">
             <span class="input-group-btn">
